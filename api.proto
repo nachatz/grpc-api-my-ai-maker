@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package featureprinter;
+
+message FeatureRequest {
+  repeated string features = 1;
+  repeated string types = 2;
+}
+
+message PythonCodeResponse {
+  string python_code = 1;
+}
+
+service FeaturePrinter {
+  rpc GeneratePythonCode(FeatureRequest) returns (PythonCodeResponse);
+}
