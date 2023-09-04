@@ -1,29 +1,22 @@
 import grpc
 import generated_code.api_pb2_grpc as api_pb2_grpc
 import generated_code.api_pb2 as api_pb2
+from services.python.generator import GeneratorService
 from concurrent import futures
 from logger import Logger
 
 
 class FeaturePrinterServicer(api_pb2_grpc.FeaturePrinterServicer):
+    def __init__(self):
+        super().__init__()
+        self.code_generator = GeneratorService()
+
     def GeneratePythonCode(self, request, context):
-        python_code = self.generate_python_code(request.features, request.types)
+        python_code = self.code_generator.generate_python_code(
+            request.features, request.types
+        )
         Logger.info(f"Generated: \n{python_code}")
         return api_pb2.PythonCodeResponse(python_code=python_code)
-
-    def generate_python_code(self, features, types):
-        Logger.info(f"Generating python3 code for: \n {features}")
-
-        typed_features = zip(features, types)
-        code = "def main():\n"
-
-        for feature, feature_type in typed_features:
-            code += f"    print('{feature}: {feature_type}')\n"
-
-        code += "\nif __name__ == '__main__':\n"
-        code += "    main()"
-
-        return code
 
 
 def serve():

@@ -1,15 +1,19 @@
 import logging
 
+
 class Logger:
-    logger = None 
+    logger = None
     date_format = "%Y-%m-%d %H:%M:%S"
 
     @classmethod
     def initialize(cls, name, log_file=None, log_level=logging.DEBUG):
         cls.logger = logging.getLogger(name)
         cls.logger.setLevel(log_level)
-        
-        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s", datefmt=cls.date_format)
+
+        formatter = logging.Formatter(
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt=cls.date_format,
+        )
 
         if log_file:
             file_handler = logging.FileHandler(log_file, mode="a")
@@ -39,4 +43,3 @@ class Logger:
     @classmethod
     def critical(cls, message):
         cls.logger.critical(message)
-

@@ -1,7 +1,8 @@
 import grpc
-import generated_code.api_pb2_grpc as api_pb2_grpc
-import generated_code.api_pb2 as api_pb2
-from logger import Logger 
+from generated_code import api_pb2_grpc as api_pb2_grpc
+from generated_code import api_pb2 as api_pb2
+from logger import Logger
+
 
 def run():
     Logger.info("Attemping to generate model ...")
@@ -9,10 +10,10 @@ def run():
         stub = api_pb2_grpc.FeaturePrinterStub(channel)
         response = stub.GeneratePythonCode(
             api_pb2.FeatureRequest(
-                features=["Feature1", "Feature2"], types=["Type1", "Type2"]
+                features=["Feature1", "Feature2"], types=["string", "Type2"]
             )
         )
-    Logger.info(f"Received response ... \n {response.python_code}")
+    Logger.info(f"Received response ... \n\n\n {response.python_code}")
 
 
 if __name__ == "__main__":
